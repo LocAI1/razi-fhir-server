@@ -466,6 +466,8 @@ module.exports.searchById = (args) =>
         logger.error('Error with Patient.searchById: ', err);
         return reject(err);
       }
+      logger.info('searchById.findOne', patient);
+
       if (patient) {
         resolve(new Patient(patient));
       }
@@ -514,6 +516,7 @@ module.exports.create = (args, { req }) =>
         logger.error('Error with Patient.create: ', err);
         return reject(err);
       }
+      logger.info('create.insertOne', { id: doc.id });
 
       // Save the resource to history
       let history_collection = db.collection(`${COLLECTION.PATIENT}_${base_version}_History`);
@@ -524,6 +527,7 @@ module.exports.create = (args, { req }) =>
           logger.error('Error with PatientHistory.create: ', err2);
           return reject(err2);
         }
+        logger.info('create.history_collection.insertOne', { id: doc.id });
         return resolve({ id: doc.id, resource_version: doc.meta.versionId });
       });
     });
@@ -548,6 +552,7 @@ module.exports.update = (args, { req }) =>
         logger.error('Error with Patient.searchById: ', err);
         return reject(err);
       }
+      logger.info('update.findOne', data);
 
       let Patient = getPatient(base_version);
       let patient = new Patient(resource);
@@ -574,6 +579,7 @@ module.exports.update = (args, { req }) =>
           logger.error('Error with Patient.update: ', err2);
           return reject(err2);
         }
+        logger.info('update.findOneAndUpdate', res);
 
         // save to history
         let history_collection = db.collection(`${COLLECTION.PATIENT}_${base_version}_History`);
@@ -586,6 +592,7 @@ module.exports.update = (args, { req }) =>
             logger.error('Error with PatientHistory.create: ', err3);
             return reject(err3);
           }
+          logger.info('update.history_collection.insertOne', { id });
 
           return resolve({
             id: id,
