@@ -1,0 +1,19 @@
+---
+name: Run security scans
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  scan:
+    uses: LocAI1/devops-github-actions/.github/workflows/security.yml@main
+    with:
+      defectdojo-scan-environment: ${{ vars.DEFECTDOJO_SCAN_ENVIRONMENT }}
+      defectdojo-scan-product-name: ${{ vars.DEFECTDOJO_SCAN_PRODUCT_NAME }}
+      defectdojo-scan-product-type-name: ${{ vars.DEFECTDOJO_SCAN_PRODUCT_TYPE_NAME }}
+      github-repository-name: ${{ github.repository }}
+      github-repository-branch: ${{ vars.SECURITY_SCAN_GIT_BRANCH }}
+      github-sha: ${{ github.sha }}
