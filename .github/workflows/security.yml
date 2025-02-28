@@ -17,3 +17,4 @@ jobs:
       github-repository-name: ${{ github.repository }}
       github-repository-branch: ${{ vars.SECURITY_SCAN_GIT_BRANCH }}
       github-sha: ${{ github.sha }}
+    secrets: inherit
